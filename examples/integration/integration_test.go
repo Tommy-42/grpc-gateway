@@ -40,9 +40,6 @@ func TestEcho(t *testing.T) {
 	}
 
 	testEcho(t, 8080, "application/json")
-	testEchoOneof(t, 8080, "application/json")
-	testEchoOneof1(t, 8080, "application/json")
-	testEchoOneof2(t, 8080, "application/json")
 	testEchoBody(t, 8080)
 }
 
