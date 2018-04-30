@@ -31,6 +31,8 @@ type errorBody struct {
 	Details []interface{} `json:"details"`
 }
 
+// TestEcho tests the most fundamental functionalities of marshaling requests
+// an unmarshaling responses.
 func TestEcho(t *testing.T) {
 	if testing.Short() {
 		t.Skip()
@@ -70,6 +72,7 @@ func TestForwardResponseOption(t *testing.T) {
 	testEcho(t, 8081, "application/vnd.docker.plugins.v1.1+json")
 }
 
+// testEcho is a part of TestEcho which deals with path parameters
 func testEcho(t *testing.T, port int, contentType string) {
 	url := fmt.Sprintf("http://localhost:%d/v1/example/echo/myid", port)
 	resp, err := http.Post(url, "application/json", strings.NewReader("{}"))
@@ -202,6 +205,7 @@ func testEchoOneof2(t *testing.T, port int, contentType string) {
 	}
 }
 
+// testEchoBody is a part of TestEcho which deals with a body parameter.
 func testEchoBody(t *testing.T, port int) {
 	sent := gw.SimpleMessage{Id: "example"}
 	var m jsonpb.Marshaler
@@ -252,6 +256,11 @@ func testEchoBody(t *testing.T, port int) {
 	}
 }
 
+// TestABE covers more than TestEcho.
+// It covers (1) various HTTP methods; (2) various HTTP status codes
+// (3) streaming requests and responses; (4) various types of fields;
+// (5) various depths of nested fields; and (6) even more features like
+// additional_bindings
 func TestABE(t *testing.T) {
 	if testing.Short() {
 		t.Skip()
@@ -270,6 +279,7 @@ func TestABE(t *testing.T) {
 	testABERepeated(t, 8080)
 }
 
+// testABECreate tests path parameters with various types of fields.
 func testABECreate(t *testing.T, port int) {
 	want := gw.ABitOfEverything{
 		FloatValue:               1.5,
@@ -324,6 +334,7 @@ func testABECreate(t *testing.T, port int) {
 	}
 }
 
+// testABECreateBody tests body parameters with various types of fields.
 func testABECreateBody(t *testing.T, port int) {
 	want := gw.ABitOfEverything{
 		FloatValue:               1.5,
@@ -410,6 +421,7 @@ func testABECreateBody(t *testing.T, port int) {
 	}
 }
 
+// testABEBulkCreate tests client-streaming
 func testABEBulkCreate(t *testing.T, port int) {
 	count := 0
 	r, w := io.Pipe()
@@ -500,6 +512,7 @@ func testABEBulkCreate(t *testing.T, port int) {
 	}
 }
 
+// testABELookup tests unary call
 func testABELookup(t *testing.T, port int) {
 	url := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything", port)
 	cresp, err := http.Post(url, "application/json", strings.NewReader(`
@@ -555,6 +568,8 @@ func testABELookup(t *testing.T, port int) {
 	}
 }
 
+// testABELookupNotFound tests HTTP status codes other than StatusOK.
+// More coverage on status codes should be done in runtime/error_test.go.
 func testABELookupNotFound(t *testing.T, port int) {
 	url := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything", port)
 	uuid := "not_exist"
@@ -605,6 +620,7 @@ func testABELookupNotFound(t *testing.T, port int) {
 	}
 }
 
+// testABEList tests server-streaming.
 func testABEList(t *testing.T, port int) {
 	url := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything", port)
 	resp, err := http.Get(url)
@@ -656,6 +672,7 @@ func testABEList(t *testing.T, port int) {
 	}
 }
 
+// testABEBulkEcho tests bidi-streaming
 func testABEBulkEcho(t *testing.T, port int) {
 	reqr, reqw := io.Pipe()
 	var wg sync.WaitGroup
@@ -734,6 +751,8 @@ func testABEBulkEcho(t *testing.T, port int) {
 	}
 }
 
+// testABEBulkEchoZeroLength covers an edge case of testABEBulkEcho that the length of
+// the chunked stream is zero.
 func testABEBulkEchoZeroLength(t *testing.T, port int) {
 	url := fmt.Sprintf("http://localhost:%d/v1/example/a_bit_of_everything/echo", port)
 	req, err := http.NewRequest("POST", url, bytes.NewReader(nil))
@@ -766,6 +785,8 @@ func testABEBulkEchoZeroLength(t *testing.T, port int) {
 	}
 }
 
+// testAdditionalBindings tests if additional_bindings works as fine as the
+// primary binding.
 func testAdditionalBindings(t *testing.T, port int) {
 	for i, f := range []func() *http.Response{
 		func() *http.Response {
@@ -1018,6 +1039,8 @@ func TestDeepFields(t *testing.T) {
 	}
 }
 
+// TestTimeout tests if timeout metadata propagates to the grpc backend server.
+// TODO(yugui) Check if the timeout is actually earlier than the default HTTP timeout.
 func TestTimeout(t *testing.T) {
 	url := "http://localhost:8080/v2/example/timeout"
 	req, err := http.NewRequest("GET", url, nil)
@@ -1038,6 +1061,8 @@ func TestTimeout(t *testing.T) {
 	}
 }
 
+// TestErrorWithDetails tests error details set by grpc server are available
+// in the HTTP response.
 func TestErrorWithDetails(t *testing.T) {
 	url := "http://localhost:8080/v2/example/errorwithdetails"
 	resp, err := http.Get(url)
@@ -1098,6 +1123,9 @@ func TestErrorWithDetails(t *testing.T) {
 	}
 }
 
+// TestPostWithEmptyBody covers an edge-case that the request body is empty.
+// It should be valid, in particular, all fields are specified in path
+// parameters and query parameters.
 func TestPostWithEmptyBody(t *testing.T) {
 	url := "http://localhost:8080/v2/example/postwithemptybody/name"
 	rep, err := http.Post(url, "application/json", nil)
@@ -1114,6 +1142,7 @@ func TestPostWithEmptyBody(t *testing.T) {
 	}
 }
 
+// TestUnknownPath tests if the router rejects unknown paths.
 func TestUnknownPath(t *testing.T) {
 	url := "http://localhost:8080"
 	resp, err := http.Post(url, "application/json", strings.NewReader("{}"))
@@ -1134,6 +1163,8 @@ func TestUnknownPath(t *testing.T) {
 	}
 }
 
+// TestUnknownPath tests if the router rejects unsupported methods on a
+// known path.
 func TestMethodNotAllowed(t *testing.T) {
 	url := "http://localhost:8080/v1/example/echo/myid"
 	resp, err := http.Get(url)
@@ -1154,6 +1185,7 @@ func TestMethodNotAllowed(t *testing.T) {
 	}
 }
 
+// TestInvalidArgument tests if the decoder rejects a malformed path parameter.
 func TestInvalidArgument(t *testing.T) {
 	url := "http://localhost:8080/v1/example/echo/myid/not_int64"
 	resp, err := http.Get(url)
