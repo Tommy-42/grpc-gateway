@@ -390,6 +390,8 @@ func (c FieldPathComponent) ValueExpr() string {
 }
 
 var (
+	// The table entries are ordered by enum numbers of the keys.
+
 	proto3ConvertFuncs = map[descriptor.FieldDescriptorProto_Type]string{
 		descriptor.FieldDescriptorProto_TYPE_DOUBLE:  "runtime.Float64",
 		descriptor.FieldDescriptorProto_TYPE_FLOAT:   "runtime.Float32",
@@ -476,6 +478,8 @@ var (
 		descriptor.FieldDescriptorProto_TYPE_SINT64:   "runtime.Int64Slice",
 	}
 
+	// wellKnownTypeConv keeps conversion functions for well-known
+	// but not primitive types.
 	wellKnownTypeConv = map[string]string{
 		".google.protobuf.Timestamp": "runtime.Timestamp",
 		".google.protobuf.Duration":  "runtime.Duration",
