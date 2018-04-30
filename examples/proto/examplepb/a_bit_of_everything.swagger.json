@@ -50,16 +50,14 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/examplepbABitOfEverything"
-            }
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/examplepbABitOfEverything"
           }
-        ],
+        }],
         "tags": [
           "ABitOfEverythingService"
         ]
@@ -99,14 +97,12 @@
             "schema": {}
           }
         },
-        "parameters": [
-          {
-            "name": "value",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [{
+          "name": "value",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }],
         "tags": [
           "echo service",
           "echo rpc"
@@ -144,8 +140,7 @@
             }
           }
         },
-        "parameters": [
-          {
+        "parameters": [{
             "name": "uuid",
             "in": "path",
             "required": true,
@@ -176,6 +171,12 @@
               "TRUE"
             ],
             "default": "FALSE"
+          },
+          {
+            "name": "single_nested.deeper_nested_value.value",
+            "in": "query",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "float_value",
@@ -325,7 +326,40 @@
             }
           },
           {
-            "name": "oneof_string",
+            "name": "oneof_value_string",
+            "description": "tag 20 is reserved.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "oneof_value_nested.name",
+            "description": "name is nested field.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "oneof_value_nested.amount",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "oneof_value_nested.ok",
+            "description": " - FALSE: FALSE is false.\n - TRUE: TRUE is true.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "FALSE",
+              "TRUE"
+            ],
+            "default": "FALSE"
+          },
+          {
+            "name": "oneof_value_nested.deeper_nested_value.value",
             "in": "query",
             "required": false,
             "type": "string"
@@ -398,8 +432,7 @@
             }
           }
         },
-        "parameters": [
-          {
+        "parameters": [{
             "name": "float_value",
             "in": "path",
             "required": true,
@@ -540,7 +573,7 @@
     },
     "/v1/example/a_bit_of_everything/{single_nested.name}": {
       "post": {
-        "operationId": "DeepPathEcho",
+        "operationId": "DeepPathEcho2",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -565,8 +598,7 @@
             }
           }
         },
-        "parameters": [
-          {
+        "parameters": [{
             "name": "single_nested.name",
             "description": "name is nested field.",
             "in": "path",
@@ -614,14 +646,12 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [{
+          "name": "uuid",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }],
         "tags": [
           "ABitOfEverythingService"
         ]
@@ -652,26 +682,22 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [{
+          "name": "uuid",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }],
         "tags": [
           "ABitOfEverythingService"
         ],
-        "security": [
-          {
-            "ApiKeyAuth": [],
-            "OAuth2": [
-              "read",
-              "write"
-            ]
-          }
-        ]
+        "security": [{
+          "ApiKeyAuth": [],
+          "OAuth2": [
+            "read",
+            "write"
+          ]
+        }]
       },
       "put": {
         "operationId": "Update",
@@ -699,8 +725,7 @@
             }
           }
         },
-        "parameters": [
-          {
+        "parameters": [{
             "name": "uuid",
             "in": "path",
             "required": true,
@@ -720,230 +745,17 @@
         ]
       }
     },
-    "/v1/example/a_bit_of_everything_repeated/{path_repeated_float_value}/{path_repeated_double_value}/{path_repeated_int64_value}/{path_repeated_uint64_value}/{path_repeated_int32_value}/{path_repeated_fixed64_value}/{path_repeated_fixed32_value}/{path_repeated_bool_value}/{path_repeated_string_value}/{path_repeated_bytes_value}/{path_repeated_uint32_value}/{path_repeated_enum_value}/{path_repeated_sfixed32_value}/{path_repeated_sfixed64_value}/{path_repeated_sint32_value}/{path_repeated_sint64_value}": {
-      "get": {
-        "operationId": "GetRepeatedQuery",
+    "/v1/example/a_bit_of_everything;echo": {
+      "post": {
+        "operationId": "DeepPathEcho",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "",
             "schema": {
-              "$ref": "#/definitions/examplepbABitOfEverythingRepeated"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "format": "string"
-            }
-          },
-          "418": {
-            "description": "I'm a teapot.",
-            "schema": {
-              "$ref": "#/definitions/examplepbNumericEnum"
+              "$ref": "#/definitions/examplepbABitOfEverything"
             }
           }
         },
-        "parameters": [
-          {
-            "name": "path_repeated_float_value",
-            "description": "repeated values. they are comma-separated in path",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "float"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_double_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_int64_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "int64"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_uint64_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uint64"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_int32_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_fixed64_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uint64"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_fixed32_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_bool_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "boolean",
-              "format": "boolean"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_string_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_bytes_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "byte"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_uint32_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_enum_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "ZERO",
-                "ONE"
-              ]
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_sfixed32_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_sfixed64_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "int64"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_sint32_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          },
-          {
-            "name": "path_repeated_sint64_value",
-            "in": "path",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "int64"
-            },
-            "collectionFormat": "csv",
-            "minItems": 1
-          }
-        ],
         "tags": [
           "ABitOfEverythingService"
         ]
@@ -983,14 +795,12 @@
             "schema": {}
           }
         },
-        "parameters": [
-          {
-            "name": "value",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
+        "parameters": [{
+          "name": "value",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }],
         "tags": [
           "echo service",
           "echo rpc"
@@ -1033,16 +843,14 @@
             "schema": {}
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "type": "string"
           }
-        ],
+        }],
         "tags": [
           "echo service",
           "echo rpc"
@@ -1146,8 +954,7 @@
             }
           }
         },
-        "parameters": [
-          {
+        "parameters": [{
             "name": "name",
             "in": "path",
             "required": true,
@@ -1159,6 +966,37 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/examplepbBody"
+            }
+          }
+        ],
+        "tags": [
+          "ABitOfEverythingService"
+        ]
+      }
+    },
+    "/v2/example/single_nested/deeper_nested_value/{single_nested.deeper_nested_value.value}": {
+      "post": {
+        "operationId": "DeepPathEcho3",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/examplepbABitOfEverything"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "single_nested.deeper_nested_value.value",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/examplepbABitOfEverything"
             }
           }
         ],
@@ -1226,8 +1064,7 @@
             }
           }
         },
-        "parameters": [
-          {
+        "parameters": [{
             "name": "id",
             "in": "path",
             "required": true,
@@ -1262,9 +1099,12 @@
         },
         "ok": {
           "$ref": "#/definitions/NestedDeepEnum"
+        },
+        "deeper_nested_value": {
+          "$ref": "#/definitions/subStringMessage"
         }
       },
-      "description": "Nested is nested type."
+      "title": "Nested is nested type.\nNEXT ID: 5"
     },
     "MessagePathEnumNestedPathEnum": {
       "type": "string",
@@ -1374,11 +1214,12 @@
             "type": "string"
           }
         },
-        "oneof_empty": {
-          "$ref": "#/definitions/protobufEmpty"
+        "oneof_value_string": {
+          "type": "string",
+          "title": "tag 20 is reserved"
         },
-        "oneof_string": {
-          "type": "string"
+        "oneof_value_nested": {
+          "$ref": "#/definitions/ABitOfEverythingNested"
         },
         "map_value": {
           "type": "object",
@@ -1413,8 +1254,7 @@
           "title": "repeated enum value. it is comma-separated in query"
         }
       },
-      "description": "Intentionaly complicated message type to cover many features of Protobuf.",
-      "title": "A bit of everything",
+      "title": "Intentionaly complicated message type to cover much features of Protobuf.\nNEXT ID: 31",
       "externalDocs": {
         "description": "Find out more about ABitOfEverything",
         "url": "https://github.com/grpc-ecosystem/grpc-gateway"
@@ -1600,8 +1440,7 @@
       }
     }
   },
-  "security": [
-    {
+  "security": [{
       "ApiKeyAuth": [],
       "BasicAuth": []
     },
